@@ -8,6 +8,5 @@ public class CreateAnAccountPage {
     public By emailField = By.cssSelector("#email_address");
     public By passwordField = By.cssSelector("#password");
     public By passwordConfirmField = By.cssSelector("#password-confirmation");
-    public By errorValidatonText = By.cssSelector(".mage-error");
     public By passwordStrengthMeter = By.cssSelector("#password-strength-meter");
 }

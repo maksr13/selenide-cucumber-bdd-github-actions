@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <version.selenide>5.24.4</version.selenide>
+        <version.selenide>6.17.0</version.selenide>
         <version.junit.cucumber>6.11.0</version.junit.cucumber>
         <version.java.cucumber>6.11.0</version.java.cucumber>
         <version.junit>4.13.2</version.junit>
