@@ -17,6 +17,7 @@ public class CukesFeaturesRunnerTest {
 
     @BeforeClass
     public static void executeBeforeTests() {
+        Configuration.headless = true;
     }
 
     @AfterClass
