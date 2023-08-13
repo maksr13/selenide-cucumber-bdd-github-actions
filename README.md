@@ -1,1 +1,1 @@
-# x2-selenium
+# Selenide Cucumber BDD GitHub Actions
