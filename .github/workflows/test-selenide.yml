@@ -9,7 +9,7 @@ jobs:
 
     services:
       selenium:
-        image: selenium/standalone-chrome
+        image: selenium/standalone-chrome:latest
         options: --shm-size=2gb
 
     steps:
