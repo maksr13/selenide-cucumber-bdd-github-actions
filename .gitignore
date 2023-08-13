@@ -1,0 +1,4 @@
+node_modules/
+.idea/
+selenide-cucumber-bdd-github-actions.iml
+target
