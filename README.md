@@ -1,1 +1,1 @@
-# Selenide Cucumber BDD GitHub Actions
+# Selenide Java Cucumber BDD GitHub Actions
