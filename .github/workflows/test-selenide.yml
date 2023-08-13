@@ -3,8 +3,7 @@ name: Test Selenide
 on: workflow_dispatch
 
 jobs:
-  test-selenide:
-
+  create-an-account:
     runs-on: ubuntu-latest
 
     services:
@@ -15,7 +14,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build with Maven
-        run: mvn test
+        run: CUCUMBER_FILTER_TAGS="@CreateAnAccount" mvn test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cucumber-report
+          path: target/cucumber-report.html
+  sign-in:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        options: --shm-size=2gb
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build with Maven
+        run: CUCUMBER_FILTER_TAGS="@SignIn" mvn test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
