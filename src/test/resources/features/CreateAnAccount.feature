@@ -1,158 +1,51 @@
-import { CreateAnAccountPage } from '../pages/CreateAnAccountPage';
-import { BasePage } from '../pages/BasePage';
-import { Utils } from '../helpers/Utils';
+Feature: CreateAnAccount
 
 
-describe('Create An Account', { tags: '@regression' }, () => {
+  Scenario: Should be able to register a new account
+    When I open the app
+    And I click link with text Create an Account
+    Then I should see page title wrapper with text Create New Customer Account
+    When I fill 'Create an Account' page with following data:
+      | firstName | lastName   | email                            | password      | passwordConfirm |
+      | Alice     | Wonderland | alice.wonderland@dispostable.com | 123890qwerty! | 123890qwerty!   |
+    Then I should see password strength meter error with text Very Strong on the 'Create an Account' page
+    When I click button Submit
+    Then I should see page title wrapper with text My Account
+    And I should see message success with text Thank you for registering with Main Website Store.
+    And I should see box content with text 'Alice'
+    And I should see box content with text 'Wonderland'
+    And I should see box content with text 'alice.wonderland'@dispostable.com
 
-    beforeEach(() => {
-        cy.visit('/');
-    });
 
-    it('Should be able to register a new account', () => {
-        const firstName = Utils.uniquify('Kevin');
-        const lastName = Utils.uniquify('Simpson');
-        const email = Utils.uniquifyEmail('kevin.simpson@dispostable.com');
-        const password = '123890qwerty!';
+  Scenario: Should not be able to register a new account if required fields are not filled (fill no fields)
+    When I open the app
+    And I click link with text Create an Account
+    And I click button Submit
+    Then I should see validation error This is a required field. for field firstName on the 'Create an Account' page
+    And I should see validation error This is a required field. for field lastName on the 'Create an Account' page
+    And I should see validation error This is a required field. for field email on the 'Create an Account' page
+    And I should see validation error This is a required field. for field password on the 'Create an Account' page
+    And I should see password strength meter error with text No Password on the 'Create an Account' page
+    And I should see validation error This is a required field. for field passwordConfirm on the 'Create an Account' page
 
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(CreateAnAccountPage.emailField).type(email);
-        cy.get(CreateAnAccountPage.passwordField).type(password);
-        cy.get(CreateAnAccountPage.passwordConfirmField).type(password);
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'Very Strong').and('be.visible');
-        cy.get(BasePage.submitButton).click();
-        cy.get(BasePage.pageTitleWrapper).should('have.text', 'My Account').and('be.visible');
-        cy.get(BasePage.messageSuccess).should('contain.text', 'Thank you for registering with Main Website Store.').and('be.visible');
-        cy.get(BasePage.boxContent).should('have.text', `\n\n${firstName} ${lastName}\n${email}\n\n\n\nYou have not set a default billing address. \n\n\nYou have not set a default shipping address. \n`).and('be.visible');
-    });
 
-    it('Should not be able to register a new account if required fields are not filled (fill no fields)', () => {
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.firstNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only firstNameField and try to submit form)
+    # todo
 
-    it('Should not be able to register a new account if required fields are not filled (fill only firstNameField and try to submit form)', () => {
-        const firstName = Utils.uniquify('Kevin');
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only lastNameField and try to submit form)
+    # todo
 
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only firstNameField and try to submit form)
+    # todo
 
-    it('Should not be able to register a new account if required fields are not filled (fill only lastNameField and try to submit form)', () => {
-        const lastName = Utils.uniquify('Simpson');
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only lastNameField and try to submit form)
+    # todo
 
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.firstNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only firstNameField, lastNameField, emailField and try to submit form)
+    # todo
 
-    it('Should not be able to register a new account if required fields are not filled (fill only firstNameField and try to submit form)', () => {
-        const firstName = Utils.uniquify('Kevin');
+  Scenario: Should not be able to register a new account if required fields are not filled (fill only firstNameField, lastNameField, emailField, passwordField and try to submit form)
+    # todo
 
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
-
-    it('Should not be able to register a new account if required fields are not filled (fill only lastNameField and try to submit form)', () => {
-        const lastName = Utils.uniquify('Simpson');
-
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).clear();
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.firstNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
-
-    it('Should not be able to register a new account if required fields are not filled (fill only firstNameField, lastNameField, emailField and try to submit form)', () => {
-        const firstName = Utils.uniquify('Kevin');
-        const lastName = Utils.uniquify('Simpson');
-        const email = Utils.uniquifyEmail('kevin.simpson@dispostable.com');
-
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(CreateAnAccountPage.emailField).type(email);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.firstNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
-
-    it('Should not be able to register a new account if required fields are not filled (fill only firstNameField, lastNameField, emailField, passwordField and try to submit form)', () => {
-        const firstName = Utils.uniquify('Kevin');
-        const lastName = Utils.uniquify('Simpson');
-        const email = Utils.uniquifyEmail('kevin.simpson@dispostable.com');
-        const password = '123890qwerty!';
-
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(CreateAnAccountPage.emailField).type(email);
-        cy.get(CreateAnAccountPage.passwordField).type(password);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.firstNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('not.exist');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('not.be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'Very Strong').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-    });
-
-    it('Should be able to register a new account if required fields are not filled and then filled', () => {
-        const firstName = Utils.uniquify('Kevin');
-        const lastName = Utils.uniquify('Simpson');
-        const email = Utils.uniquifyEmail('kevin.simpson@dispostable.com');
-        const password = '123890qwerty!';
-
-        cy.contains(BasePage.link, 'Create an Account').click();
-        cy.get(CreateAnAccountPage.firstNameField).type(firstName);
-        cy.get(BasePage.submitButton).click();
-        cy.get(CreateAnAccountPage.lastNameField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.emailField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordStrengthMeter).should('contain.text', 'No Password').and('be.visible');
-        cy.get(CreateAnAccountPage.passwordConfirmField).next(CreateAnAccountPage.errorValidatonText).should('have.text', 'This is a required field.').and('be.visible');
-        cy.get(CreateAnAccountPage.lastNameField).type(lastName);
-        cy.get(CreateAnAccountPage.emailField).type(email);
-        cy.get(CreateAnAccountPage.passwordField).type(password);
-        cy.get(CreateAnAccountPage.passwordConfirmField).type(password);
-        cy.get(BasePage.submitButton).click();
-        cy.get(BasePage.pageTitleWrapper).should('have.text', 'My Account').and('be.visible');
-        cy.get(BasePage.messageSuccess).should('contain.text', 'Thank you for registering with Main Website Store.').and('be.visible');
-        cy.get(BasePage.boxContent).should('have.text', `\n\n${firstName} ${lastName}\n${email}\n\n\n\nYou have not set a default billing address. \n\n\nYou have not set a default shipping address. \n`).and('be.visible');
-    });
-});
+  Scenario: Should be able to register a new account if required fields are not filled and then filled
+    # todo

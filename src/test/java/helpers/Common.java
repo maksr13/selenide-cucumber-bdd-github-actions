@@ -55,7 +55,12 @@ public class Common {
     }
 
     public static String getAppUiUrl() {
-        return System.getProperty("app_ui_url");
+        String url = System.getProperty("app_ui_url");
+        if (StringUtils.isEmpty(url)) {
+            url = getConfigValue("app_ui_url");
+        }
+
+        return url;
     }
 
     public static void setUniqueValue(String value) {

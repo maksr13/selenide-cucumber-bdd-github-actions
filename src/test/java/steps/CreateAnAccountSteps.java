@@ -1,6 +1,7 @@
 package steps;
 
 import com.codeborne.selenide.Condition;
+import helpers.Common;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,19 +20,19 @@ public class CreateAnAccountSteps {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
         for (Map<String, String> row : rows) {
             if (row.containsKey("firstName")) {
-                $(createAnAccountPage.firstNameField).type(row.get("firstName"));
+                $(createAnAccountPage.firstNameField).setValue(Common.getUniqueValue(row.get("firstName")));
             }
             if (row.containsKey("lastName")) {
-                $(createAnAccountPage.lastNameField).type(row.get("lastName"));
+                $(createAnAccountPage.lastNameField).setValue(Common.getUniqueValue(row.get("lastName")));
             }
             if (row.containsKey("email")) {
-                $(createAnAccountPage.emailField).type(row.get("email"));
+                $(createAnAccountPage.emailField).setValue(Common.getUniqueEmail(row.get("email")));
             }
             if (row.containsKey("password")) {
-                $(createAnAccountPage.passwordField).type(row.get("password"));
+                $(createAnAccountPage.passwordField).setValue(row.get("password"));
             }
             if (row.containsKey("passwordConfirm")) {
-                $(createAnAccountPage.passwordConfirmField).type(row.get("passwordConfirm"));
+                $(createAnAccountPage.passwordConfirmField).setValue(row.get("passwordConfirm"));
             }
         }
     }
@@ -57,6 +58,6 @@ public class CreateAnAccountSteps {
     @Then("^I should see password strength meter error with text (.*) on the 'Create an Account' page$")
     public void iShouldSeePasswordStrengthMeterErrorWithTextXxxOnTheCreateAnAccountPage(String error) {
         CreateAnAccountPage createAnAccountPage = new CreateAnAccountPage();
-        $(createAnAccountPage.passwordStrengthMeter).shouldHave(Condition.exactText(error)).shouldHave(Condition.visible);
+        $(createAnAccountPage.passwordStrengthMeter).shouldHave(Condition.text(error)).shouldHave(Condition.visible);
     }
 }

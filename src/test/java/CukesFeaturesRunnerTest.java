@@ -1,11 +1,12 @@
 import com.codeborne.selenide.Configuration;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import static com.codeborne.selenide.WebDriverRunner.closeWebDriver;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -16,12 +17,10 @@ public class CukesFeaturesRunnerTest {
 
     @BeforeClass
     public static void executeBeforeTests() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--disable-dev-shm-usage");
-        WebDriverManager.chromedriver().capabilities(chromeOptions).setup();
     }
 
     @AfterClass
     public static void executeAfterTests() {
+        closeWebDriver();
     }
 }

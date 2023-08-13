@@ -15,14 +15,20 @@ public class CommonSteps {
         open(Common.getAppUiUrl());
     }
 
-    @When("^I click (.*) button$")
-    public void iClickXxxButton(String button) {
+    @When("^I click button (.*)$")
+    public void iClickButtonXxx(String button) {
         BasePage basePage = new BasePage();
         if (button.equalsIgnoreCase("Submit")) {
             $(basePage.submitButton).click();
         } else {
             throw new IllegalArgumentException(String.format("Unsupported button name - '%s'", button));
         }
+    }
+
+    @Then("^I click link with text (.*)$")
+    public void iClickLinkWithTextXxx(String text) {
+        BasePage basePage = new BasePage();
+        $$(basePage.link).find(Condition.text(text)).click();
     }
 
     @Then("^I should see page title wrapper with text (.*)$")
@@ -40,6 +46,6 @@ public class CommonSteps {
     @Then("^I should see box content with text (.*)$")
     public void iShouldSeeBoxContentWithTextXxx(String text) {
         BasePage basePage = new BasePage();
-        $(basePage.boxContent).shouldHave(Condition.exactText(text)).shouldHave(Condition.visible);
+        $(basePage.boxContent).shouldHave(Condition.text(Common.getUniqueResult(text))).shouldHave(Condition.visible);
     }
 }
